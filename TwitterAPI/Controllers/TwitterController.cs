@@ -58,7 +58,7 @@ namespace TwitterAPI.Controllers
             }
 
             //successfully returning tweets back to the caller
-            if (returnedTweets != null)
+            if (returnedTweets.Count > 0)
             {
                 return Ok(returnedTweets);
             }
@@ -69,7 +69,7 @@ namespace TwitterAPI.Controllers
                 emptyTweetResult.Created_at = "no tweet available";
                 emptyTweetResult.Text = "no tweet available";
                 returnedTweets.Add(emptyTweetResult);
-                return BadRequest();
+                return BadRequest(returnedTweets);
             }
         }
 
@@ -82,7 +82,7 @@ namespace TwitterAPI.Controllers
         /// <param name="nextToken">token to handle pagination</param>
         /// <param name="returnedTweets">the collection of tweets to be handled</param>
         /// <returns></returns>
-        private async Task<string> QueryTweets(string twtrHandles, string query, string bearerToken, string? nextToken,List<Tweet> returnedTweets)
+        private async Task<string> QueryTweets(string twtrHandles, string query, string bearerToken, string? nextToken, List<Tweet> returnedTweets)
         {
             using (var twitterClient = new HttpClient())
             {
