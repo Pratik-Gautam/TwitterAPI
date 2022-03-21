@@ -92,11 +92,11 @@ namespace TwitterAPI.Controllers
 
                 using (var twitterResponse = await twitterClient.GetAsync(twitterUrl))
                 {
-                    string apiResponse = await twitterResponse.Content.ReadAsStringAsync();
+                    string? apiResponse = await twitterResponse.Content.ReadAsStringAsync();
                     if (apiResponse is not null && apiResponse.ToLower().Contains("data") && apiResponse.ToLower().Contains("meta"))
                     {
-                        var tweetData = JObject.Parse(apiResponse).SelectToken("data").ToString();
-                        var tweetMetaData = JObject.Parse(apiResponse).SelectToken("meta").ToString();
+                        string? tweetData = JObject.Parse(apiResponse)?.SelectToken("data")?.ToString();
+                        string? tweetMetaData = JObject.Parse(apiResponse)?.SelectToken("meta")?.ToString();
                         returnedTweets.AddRange(JsonConvert.DeserializeObject<List<Tweet>>(tweetData));
                         nextToken = JsonConvert.DeserializeObject<Meta>(tweetMetaData).Next_token;
                     }
